@@ -4,20 +4,16 @@ import { SubscribeButton } from '../components/SubscribeButton';
 import { stripe } from '../services/stripe';
 
 import styles from './home.module.scss';
-
-//Client-side
-//Server-side
-//Statis Site Generation
+import Image from 'next/image';
 
 interface HomeProps {
   product: {
-    priceId: string,
-    amount: number,
-  }
+    priceId: string;
+    amount: number;
+  };
 }
 
 export default function Home({ product }: HomeProps) {
-
   return (
     <>
       <Head>
@@ -27,8 +23,10 @@ export default function Home({ product }: HomeProps) {
       <main className={styles.contentContainer}>
         <section className={styles.hero}>
           <span>👏 Hey, welcome</span>
-          <h1>News about <br />
-             the <span>React</span> world.</h1>
+          <h1>
+            News about <br />
+            the <span>React</span> world.
+          </h1>
           <p>
             Get access to all the publications <br />
             <span>for {product.amount} month</span>
@@ -37,10 +35,15 @@ export default function Home({ product }: HomeProps) {
           <SubscribeButton priceId={product.priceId} />
         </section>
 
-        <img src="/images/avatar.svg" alt="Girl coding" />
+        <Image
+          width={336}
+          height={521}
+          src="/images/avatar.svg"
+          alt="Girl coding"
+        />
       </main>
     </>
-  )
+  );
 }
 
 export const getStaticProps: GetStaticProps = async () => {
@@ -51,13 +54,13 @@ export const getStaticProps: GetStaticProps = async () => {
     amount: new Intl.NumberFormat('en-US', {
       style: 'currency',
       currency: 'USD',
-    }).format(price.unit_amount / 100)
-  }
-  
+    }).format(price.unit_amount / 100),
+  };
+
   return {
     props: {
       product,
     },
     revalidate: 60 * 60 * 24, //24 hours
-  }
-}
+  };
+};
